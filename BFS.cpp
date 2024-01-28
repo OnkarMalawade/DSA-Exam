@@ -1,51 +1,67 @@
-#include <bits/stdc++.h>
-using namespace std;
-class Graph {
-public:
-	int V;
-	vector<list<int> > adj;
-	Graph(int V);
-	void addEdge(int v, int w);
-	void BFS(int s);
-};
-Graph::Graph(int V)
-{
-	this->V = V;
-	adj.resize(V);
-}
-void Graph::addEdge(int v, int w)
-{
-	adj[v].push_back(w);
-}
-void Graph::BFS(int s)
-{
-	vector<bool> visited;
-	visited.resize(V, false);
-	list<int> queue;
-	visited[s] = true;
-	queue.push_back(s);
 
-	while (!queue.empty()) {
-		s = queue.front();
-		cout << s << " ";
-		queue.pop_front();
-		for (auto adjacent : adj[s]) {
-			if (!visited[adjacent]) {
-				visited[adjacent] = true;
-				queue.push_back(adjacent);
-			}
-		}
-	}
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+class Graph {
+  int numVertices;
+  list<int>* adjLists;
+  bool* visited;
+
+   public:
+  Graph(int vertices);
+  void addEdge(int src, int dest);
+  void BFS(int startVertex);
+};
+
+Graph::Graph(int vertices) {
+  numVertices = vertices;
+  adjLists = new list<int>[vertices];
 }
-int main()
-{
-	Graph g(4);
-	g.addEdge(0, 1);
-	g.addEdge(0, 2);
-	g.addEdge(1, 2);
-	g.addEdge(2, 0);
-	g.addEdge(2, 3);
-	g.addEdge(3, 3);
-	g.BFS(2);
-	return 0;
+
+void Graph::addEdge(int src, int dest) {
+  adjLists[src].push_back(dest);
+  adjLists[dest].push_back(src);
+}
+
+void Graph::BFS(int startVertex) {
+  visited = new bool[numVertices];
+  for (int i = 0; i < numVertices; i++)
+    visited[i] = false;
+
+  list<int> queue;
+
+  visited[startVertex] = true;
+  queue.push_back(startVertex);
+
+  list<int>::iterator i;
+
+  while (!queue.empty()) {
+    int currVertex = queue.front();
+    cout << "Visited " << currVertex << " ";
+    queue.pop_front();
+
+    for (i = adjLists[currVertex].begin(); i != adjLists[currVertex].end(); ++i) {
+      int adjVertex = *i;
+      if (!visited[adjVertex]) {
+        visited[adjVertex] = true;
+        queue.push_back(adjVertex);
+      }
+    }
+  }
+}
+
+int main() {
+  Graph g(4);
+  g.addEdge(0, 1);
+  g.addEdge(0, 2);
+  g.addEdge(1, 2);
+  g.addEdge(2, 0);
+  g.addEdge(2, 3);
+  g.addEdge(3, 3);
+
+  g.BFS(2);
+
+  return 0;
 }
