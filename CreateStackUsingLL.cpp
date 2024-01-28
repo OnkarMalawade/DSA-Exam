@@ -7,12 +7,12 @@ using namespace std;
 class Node {
 public:
     int data;
-    Node* link;
+    Node* next;
    
     Node(int n)
     {
         this->data = n;
-        this->link = NULL;
+        this->next = NULL;
     }
 };
  
@@ -32,7 +32,7 @@ public:
         }
  
         temp->data = data;
-        temp->link = top;
+        temp->next = top;
         top = temp;
     }
  
@@ -59,7 +59,7 @@ public:
         }
         else {
             temp = top;
-            top = top->link;
+            top = top->next;
             free(temp);
         }
     }
@@ -75,8 +75,8 @@ public:
         else {
             temp = top;
             while (temp != NULL) {
-                cout << temp->data;
-                temp = temp->link;
+                cout << temp->data <<" ";
+                temp = temp->next;
                 if (temp != NULL)
                     cout << " -> ";
             }
